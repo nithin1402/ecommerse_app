@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/about_product_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -82,38 +83,43 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Container(
-                height: 500,
                 width: double.infinity,
+                height: 600,
                 child: GridView.builder(
-                  itemCount: 5,
+                  itemCount: 50,
                   itemBuilder: (_,index) {
-                    return  Container(
-                      height: 600,
-                      width: 200,
-                      child: Column(
-                        children: [
-                          Container(
-                              height: 120,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                // boxShadow: [
-                                //   BoxShadow(
-                                //     color: Colors.grey,
-                                //     blurRadius: 1,
-                                //     spreadRadius: 1
-                                //   )
-                                // ],
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/images/buds.jpg")
-                                  )
-                              )
-                          ),
-                          SizedBox(height: 11,),
-                          Text("Wireless Headphones",style: TextStyle(fontSize: 10),),
-                          SizedBox(height: 11,),
-                          Text("120.00",style: TextStyle(fontSize: 12),)
-                        ],
-                      ) ,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>AboutProductPage()));
+                      },
+                      child: Container(
+                        height: 600,
+                        width: 200,
+                        child: Column(
+                          children: [
+                            Container(
+                                height: 120,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: Colors.grey,
+                                  //     blurRadius: 1,
+                                  //     spreadRadius: 1
+                                  //   )
+                                  // ],
+                                    image: DecorationImage(
+                                        image: AssetImage("assets/images/buds.jpg")
+                                    )
+                                )
+                            ),
+                            SizedBox(height: 11,),
+                            Text("Wireless Headphones",style: TextStyle(fontSize: 10),),
+                            SizedBox(height: 11,),
+                            Text("\$120.00",style: TextStyle(fontSize: 12),)
+                          ],
+                        ) ,
+                      ),
                     );
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),),
