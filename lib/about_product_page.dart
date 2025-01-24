@@ -109,18 +109,81 @@ class _AboutProductPageState extends State<AboutProductPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("Description",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+                  Container(
+                    height: 40,
+                      width: 110,
+                      decoration: BoxDecoration(
+                        color: Colors.deepOrangeAccent,
+                        borderRadius: BorderRadius.circular(25)
+                      ),
+                      child: Center(
+                          child: Text("Description",style: TextStyle(fontSize: 16,color: Colors.white),))),
                   Text("Specifications",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                   Text("Reviews",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold))
                 ],
               ),
+              SizedBox(height: 11,),
+              Container(
+                height: 200,
+                width: double.infinity,
+                child: Text("Earbuds are a type of headphones that fit snugly inside your ear canal. They’re popular because they’re small and portable and don’t leak sound like other types of headphones do. Earbuds can be used for any audio device, from phones and tablets to laptops and mp3 players."),
+              )
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>CartPage()));
-      },child: Icon(Icons.add),),
+      floatingActionButton: Container(
+        height: 75,
+        width: 380,
+        decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(35)
+        ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                height: 40,
+                width: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("-",style: TextStyle(color: Colors.white,fontSize: 20),),
+                    Text("1",style: TextStyle(color: Colors.white,fontSize: 20),),
+                    Text("+",style: TextStyle(color: Colors.white,fontSize: 20),),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(40),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white,
+                      spreadRadius: 1,
+                      blurRadius: 1
+                    )
+                  ]
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()));
+                },
+                child: Container(
+                  height: 55,
+                  width: 185,
+                  child: Center(child: Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 18),)),
+                  decoration: BoxDecoration(
+                      color: Colors.deepOrangeAccent,
+                      borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -16,14 +16,14 @@ class _CartPageState extends State<CartPage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-             Container(
+        child: Column(
+          children: [
+           Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Container(
                height: 500,
                child: ListView.builder(
-                   itemCount: 5,
+                   itemCount: 3,
                    itemBuilder: (_,index){
                  return Padding(
                    padding: const EdgeInsets.all(8.0),
@@ -69,7 +69,7 @@ class _CartPageState extends State<CartPage> {
                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                    children: [
                                      Text("Wireless Headphone",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                                     Icon(Icons.delete_sharp,color: Colors.redAccent,)
+                                     Icon(Icons.delete_sharp,color: Colors.deepOrangeAccent,)
                                    ],
                                  ),
                                  Text("Electronics",style: TextStyle(color: Colors.grey,fontSize: 14),),
@@ -121,9 +121,76 @@ class _CartPageState extends State<CartPage> {
                    ),
                  );
                }),
-             )
-            ],
-          ),
+             ),
+           ),
+            SizedBox(height: 11,),
+            Container(
+              height: 300,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(35)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    blurRadius: 1,
+                    spreadRadius: 1
+                  )
+                ]
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 11,),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: "Enter Discount Code",
+                        suffix: Text("Apply",style: TextStyle(color: Colors.orange,fontWeight: FontWeight.bold,fontSize: 20),),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(35)
+                        )
+                      ),
+                    ),
+                    SizedBox(height: 21,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Subtotal",style: TextStyle(color: Colors.grey,fontSize: 18),),
+                        Text("\$245.00",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)
+                      ],
+                    ),
+                    SizedBox(height: 11,),
+                    Container(
+                      height: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                    SizedBox(height: 11,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Total",style: TextStyle(fontWeight:FontWeight.bold,fontSize: 18),),
+                        Text("\$245.00",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: Container(
+        height: 55,
+        width: 380,
+        decoration: BoxDecoration(
+          color: Colors.deepOrangeAccent,
+          borderRadius: BorderRadius.circular(35)
+        ),
+        child: Center(
+          child: Text("Checkout",style: TextStyle(fontSize: 19,color: Colors.white),),
         ),
       ),
     );
