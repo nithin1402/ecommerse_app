@@ -1,10 +1,16 @@
 
+import 'package:ecommerce_app/data/remote/api_helper.dart';
+import 'package:ecommerce_app/data/repository/app_repository.dart';
+import 'package:ecommerce_app/screens/bloc/home_bloc.dart';
+import 'package:ecommerce_app/screens/on_boarding/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'home_page.dart';
+import 'screens/home/home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(BlocProvider(create: (context)=>HomeBloc(appRepository: AppRepository(apiHelper: ApiHelper())),
+    child: MyApp(),),);
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +26,7 @@ class MyApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: LoginPage()
     );
   }
 }

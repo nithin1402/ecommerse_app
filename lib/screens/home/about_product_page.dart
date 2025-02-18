@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/cart_page.dart';
+import 'package:ecommerce_app/screens/home/cart_page.dart';
 import 'package:flutter/material.dart';
 
 class AboutProductPage extends StatefulWidget {

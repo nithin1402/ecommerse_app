@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:ecommerce_app/about_product_page.dart';
-import 'package:ecommerce_app/cart_page.dart';
+import 'package:ecommerce_app/screens/home/about_product_page.dart';
+import 'package:ecommerce_app/screens/home/cart_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
