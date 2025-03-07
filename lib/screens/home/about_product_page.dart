@@ -1,14 +1,23 @@
+import 'package:ecommerce_app/data/models/product_model.dart';
+import 'package:ecommerce_app/screens/add_cart_bloc/addcart_bloc.dart';
+import 'package:ecommerce_app/screens/add_cart_bloc/addcart_event.dart';
+import 'package:ecommerce_app/screens/add_cart_bloc/addcart_state.dart';
 import 'package:ecommerce_app/screens/home/cart_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AboutProductPage extends StatefulWidget {
-  const AboutProductPage({super.key});
+  DataModel selectedProduct;
+  AboutProductPage({required this.selectedProduct});
 
   @override
   State<AboutProductPage> createState() => _AboutProductPageState();
 }
 
 class _AboutProductPageState extends State<AboutProductPage> {
+
+  bool isLoading = false;
+  int qty =1;
 
   List<Color> productColors = [
     Colors.redAccent,
@@ -45,14 +54,16 @@ class _AboutProductPageState extends State<AboutProductPage> {
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     image: DecorationImage(
-                      image: AssetImage("assets/images/buds.jpg"),fit: BoxFit.fill
+                      image: NetworkImage(widget.selectedProduct.image
+                         // "assets/images/buds.jpg"
+                      ),fit: BoxFit.contain
                     )
                   ),
                 ),
                 SizedBox(height: 21,),
-                Text("Wireless Headphone",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+                Text(widget.selectedProduct.name,style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
                 SizedBox(height: 11,),
-                Text("\$520.00",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                Text(widget.selectedProduct.price,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                 SizedBox(height: 11,),
                 Row(
                   children: [
@@ -134,61 +145,102 @@ class _AboutProductPageState extends State<AboutProductPage> {
             ),
           ),
         ),
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 65,
-                width: 380,
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(35)
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(width: 1,),
-                      Container(
-                        height: 32,
-                        width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("-",style: TextStyle(color: Colors.white,fontSize: 20),),
-                            Text("1",style: TextStyle(color: Colors.white,fontSize: 20),),
-                            Text("+",style: TextStyle(color: Colors.white,fontSize: 20),),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(40),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.white,
-                                  spreadRadius: 1,
-                                  blurRadius: 1
-                              )
-                            ]
-                        ),
-                      ),
-                      SizedBox(width: 11,),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()));
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 185,
-                          child: Center(child: Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 18),)),
+          BlocListener<AddcartBloc,AddcartState>(
+            listener:(context,state){
+              if(state is AddcartLoadingState){
+                isLoading=true;
+                setState(() {
+
+                });
+              }else if(state is AddcartErrorState){
+                isLoading=false;
+                setState(() {
+
+                });
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMsg)));
+              }else if(state is AddcartLoadedState){
+                isLoading = false;
+                setState(() {
+
+                });
+              }
+            } ,
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 65,
+                  width: 380,
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(35)
+                  ),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(width: 1,),
+                        Container(
+                          height: 32,
+                          width: 100,
                           decoration: BoxDecoration(
-                            color: Colors.deepOrangeAccent,
-                            borderRadius: BorderRadius.circular(50),
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(40),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.white,
+                                    spreadRadius: 1,
+                                    blurRadius: 1
+                                )
+                              ]
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  if(qty>1){
+                                    qty--;
+                                    setState(() {
+
+                                    });
+                                  }
+                                },
+                                  child: Text("-",style: TextStyle(color: Colors.white,fontSize: 20),)),
+                              Text("$qty",style: TextStyle(color: Colors.white,fontSize: 20),),
+                              InkWell(
+                                onTap: () {
+                                  qty++;
+                                  setState(() {
+
+                                  });
+                                },
+                                  child: Text("+",style: TextStyle(color: Colors.white,fontSize: 20),)),
+                            ],
                           ),
                         ),
-                      )
-                    ],
+                        SizedBox(width: 11,),
+                        InkWell(
+                          onTap: () {
+                            context.read<AddcartBloc>().add(AddToCartEvent(mParams: {
+                              "product_id" : widget.selectedProduct.id,
+                              "quantity" :qty
+                            }));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()));
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 185,
+                            child: Center(child: Text("Add to Cart",style: TextStyle(color: Colors.white,fontSize: 18),)),
+                            decoration: BoxDecoration(
+                              color: Colors.deepOrangeAccent,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

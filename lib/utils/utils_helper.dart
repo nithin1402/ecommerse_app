@@ -13,17 +13,23 @@ InputDecoration mTextFieldDecoration({var lableText,required String hintText,Ico
     ) ,
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(20)
-    )
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20)
+    ),
+    errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20)
+    ),
   );
 }
 
-SizedBox mHeight({var mHeight=11}){
+SizedBox mHeight({double mHeight=11}){
   return SizedBox(
     height: mHeight,
   );
 }
 
-SizedBox mWidth({var mWidth=11}){
+SizedBox mWidth({double mWidth=11}){
   return SizedBox(
     width: mWidth,
   );

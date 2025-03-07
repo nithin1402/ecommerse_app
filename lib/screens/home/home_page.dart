@@ -1,10 +1,11 @@
-import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:ecommerce_app/data/models/product_model.dart';
 import 'package:ecommerce_app/screens/home/about_product_page.dart';
-import 'package:ecommerce_app/screens/home/cart_page.dart';
+import 'package:ecommerce_app/screens/product_bloc/product_bloc.dart';
+import 'package:ecommerce_app/screens/product_bloc/product_event.dart';
+import 'package:ecommerce_app/screens/product_bloc/product_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,8 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
+  List<ProductModel>? productModel;
 
   List<Color> productColors = [
     Colors.redAccent,
@@ -26,14 +26,17 @@ class _HomePageState extends State<HomePage> {
   ];
 
   PageController pageController = PageController();
-  
+
   List<Widget> mPages = [
-    Image.network("https://th.bing.com/th/id/OIP.8QgLZNeqWbrZug3Ade0LgQHaD5?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"),
-    Image.network("https://th.bing.com/th/id/OIP.1xF_DfAQSD7ZAMZL4gpNwQHaEP?w=330&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7"),
-    Image.network("https://th.bing.com/th/id/OIP.s3bWa5ryx7oMLUE9-JL7OwHaDt?w=273&h=175&c=7&r=0&o=5&dpr=1.3&pid=1.7")
+    Image.network(
+        "https://th.bing.com/th/id/OIP.8QgLZNeqWbrZug3Ade0LgQHaD5?w=318&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"),
+    Image.network(
+        "https://th.bing.com/th/id/OIP.1xF_DfAQSD7ZAMZL4gpNwQHaEP?w=330&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7"),
+    Image.network(
+        "https://th.bing.com/th/id/OIP.s3bWa5ryx7oMLUE9-JL7OwHaDt?w=273&h=175&c=7&r=0&o=5&dpr=1.3&pid=1.7")
   ];
 
-  int selectedIndex= -1;
+  int selectedIndex = -1;
 
   int bannerIndex = 0;
 
@@ -41,16 +44,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Timer.periodic(Duration(seconds: 2),(timer){
-    //   if(bannerIndex>mPages.length-1){
-    //     bannerIndex++;
-    //   }else{
-    //     bannerIndex=0;
-    //   }
-    //   setState(() {
-    //
-    //   });
-    // });
+    context.read<ProductBloc>().add(FetchProductEvent());
   }
 
   @override
@@ -61,8 +55,14 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.menu,size: 30,),
-            Icon(Icons.notifications_none_outlined,size: 30,)
+            Icon(
+              Icons.menu,
+              size: 30,
+            ),
+            Icon(
+              Icons.notifications_none_outlined,
+              size: 30,
+            )
           ],
         ),
       ),
@@ -75,199 +75,284 @@ class _HomePageState extends State<HomePage> {
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     hintText: "Search...",
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    suffixIcon: const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text("|",style: TextStyle(fontSize: 25,color: Colors.grey),),
-                          SizedBox(width: 11,),
+                          Text(
+                            "|",
+                            style: TextStyle(fontSize: 25, color: Colors.grey),
+                          ),
+                          SizedBox(
+                            width: 11,
+                          ),
                           Icon(Icons.list),
-                          SizedBox(width: 11,),
+                          SizedBox(
+                            width: 11,
+                          ),
                         ],
                       ),
                     ),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(45)
-                    )
-                ),
+                        borderRadius: BorderRadius.circular(45))),
               ),
-              SizedBox(height: 11,),
               SizedBox(
-                height: 250,
-                width: double.infinity,
-                child: CarouselSlider.builder(itemCount: mPages.length,
-                    itemBuilder: (_,index,__){
-                  return mPages[index];
-                }, options: CarouselOptions(
-                      initialPage: 0,
-                      autoPlay: true,
-                      aspectRatio: 16/9,
-                      autoPlayCurve: Curves.easeInOutCubicEmphasized,
-                      viewportFraction: 1,
-                      autoPlayAnimationDuration: Duration(milliseconds: 1000)
-                    ))
-                // PageView.builder(
-                //   itemCount: mPages.length,
-                //     controller: pageController,
-                //     itemBuilder: (_,index){
-                //   return mPages[index];
-                // }),
+                height: 11,
               ),
-              SizedBox(height: 11,),
+              SizedBox(
+                  height: 250,
+                  width: double.infinity,
+                  child: CarouselSlider.builder(
+                      itemCount: mPages.length,
+                      itemBuilder: (_, index, __) {
+                        return mPages[index];
+                      },
+                      options: CarouselOptions(
+                          initialPage: 0,
+                          autoPlay: true,
+                          aspectRatio: 16 / 9,
+                          autoPlayCurve: Curves.easeInOutCubicEmphasized,
+                          viewportFraction: 1,
+                          autoPlayAnimationDuration:
+                              Duration(milliseconds: 1000)))
+                  // PageView.builder(
+                  //   itemCount: mPages.length,
+                  //     controller: pageController,
+                  //     itemBuilder: (_,index){
+                  //   return mPages[index];
+                  // }),
+                  ),
+              SizedBox(
+                height: 11,
+              ),
               Container(
                 height: 120,
                 width: double.infinity,
                 child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                    itemBuilder: (_,index){
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: (){
-                              selectedIndex = index;
-                              setState(() {
-
-                              });
-                    },
-                            child: Container(
-                              height: 70,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                border: selectedIndex==index ? Border.all(
-                                  color: Colors.blue,
-                                  width: 2
-                                ) : null,
-                                borderRadius: BorderRadius.circular(50),
-                                image: DecorationImage(
-                                    image: AssetImage("assets/images/groce_shoes.jpg"),fit: BoxFit.cover
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 10,
+                    itemBuilder: (_, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                selectedIndex = index;
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 70,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                  border: selectedIndex == index
+                                      ? Border.all(color: Colors.blue, width: 2)
+                                      : null,
+                                  borderRadius: BorderRadius.circular(50),
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/images/groce_shoes.jpg"),fit: BoxFit.cover
+                                      ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 11,),
-                          Text("Shoes",style: TextStyle(fontWeight: FontWeight.bold),)
-                        ],
-                      ),
-                    );
+                            SizedBox(
+                              height: 11,
+                            ),
+                            Text(
+                              "Shoes",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      );
                     }),
               ),
-              SizedBox(height: 11,),
-              Row(
+              SizedBox(
+                height: 11,
+              ),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Special For You",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-                  Text("See all",style: TextStyle(color: Colors.grey),)
+                  Text(
+                    "Special For You",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  ),
+                  Text(
+                    "See all",
+                    style: TextStyle(color: Colors.grey),
+                  )
                 ],
               ),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 12,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,childAspectRatio: 3/4,crossAxisSpacing: 12,mainAxisSpacing: 12),
-                  itemBuilder: (_,index) {
-                    return Card(
-                      elevation: 0,
-                      color: Colors.grey.shade200,
-                      child: Container(
-                        height: 200,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AboutProductPage()));
-                          },
-                          child: Column(
-                            children: [
-                              Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        height:25,
-                                          width: 25,
-                                          decoration: BoxDecoration(
-                                            color: Colors.deepOrangeAccent,
-                                            borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomLeft: Radius.circular(10))
-                                          ),
-                                          child: Icon(Icons.favorite_border,color: Colors.grey.shade300,size: 20,)
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 1,),
-                                  Container(
-                                    height: 130,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                                        image: DecorationImage(
-                                            image: AssetImage("assets/images/buds.jpg"),fit: BoxFit.fill,scale: 10
-                                        )
-                                    ),
-                                  ),
-                                  SizedBox(height: 11,),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+              BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+                if (state is ProductLoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is ProductLoadedState) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: state.mProducts.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 2 / 3),
+                        itemBuilder: (_, index) {
+                          return Card(
+                            elevation: 0,
+                            color: Colors.grey.shade200,
+                            child: Container(
+                              height: 200,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AboutProductPage(selectedProduct: state.mProducts[index],)));
+                                },
+                                child: Column(
+                                  children: [
+                                    Column(
                                       children: [
-                                        Text(" Wireless Headphones",style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),),
-                                        SizedBox(height: 1,),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
                                           children: [
-                                            Text(" \$120.00",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                                            SizedBox(
-                                              height: 21,
-                                              width: 65,
-                                              child: ListView.builder(
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: productColors.length,
-                                                  itemBuilder: (_,index) {
-                                                    return Padding(
-                                                      padding: const EdgeInsets.all(2.0),
-                                                      child: Container(
-                                                        height: 17,
-                                                        width: 17,
-                                                        decoration: BoxDecoration(
-                                                            color: productColors[index],
-                                                            borderRadius: BorderRadius.circular(40)
-                                                        ),
-                                                      ),
-                                                    );
-                                                  }),
-                                            ),
+                                            Container(
+                                                height: 25,
+                                                width: 25,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        Colors.deepOrangeAccent,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    10),
+                                                            bottomLeft: Radius
+                                                                .circular(10))),
+                                                child: Icon(
+                                                  Icons.favorite_border,
+                                                  color: Colors.grey.shade300,
+                                                  size: 20,
+                                                ))
                                           ],
-                                        )
-
+                                        ),
+                                        SizedBox(
+                                          height: 1,
+                                        ),
+                                        Container(
+                                          height: 130,
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                      top: Radius.circular(15)),
+                                              image: DecorationImage(
+                                                  image:state.mProducts[index].image!=null ? NetworkImage(state.mProducts[index].image) : AssetImage("assets/images/buds.jpg"),
+                                                  //AssetImage("assets/images/buds.jpg"),
+                                                  fit: BoxFit.contain,
+                                                  scale: 10)) ,
+                                        ),
+                                        SizedBox(
+                                          height: 11,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(state.mProducts[index].name ?? "No Name",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(
+                                                height: 1,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                              state.mProducts[index].price ?? "0.00",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 21,
+                                                    width: 65,
+                                                    child: ListView.builder(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemCount: productColors
+                                                            .length,
+                                                        itemBuilder:
+                                                            (_, index) {
+                                                          return Padding(
+                                                            padding:const EdgeInsets.all(2.0),child: Container(
+                                                              height: 17,
+                                                              width: 17,
+                                                              decoration: BoxDecoration(
+                                                                  color:
+                                                                      productColors[
+                                                                          index],
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              40)),
+                                                            ),
+                                                          );
+                                                        }),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        // Container(
+                                        //   width: 180,
+                                        //   height: 60,
+                                        //   decoration: BoxDecoration(
+                                        //     color: Colors.white,
+                                        //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+                                        //   ),
+                                        //   child: Padding(
+                                        //     padding: const EdgeInsets.all(8.0),
+                                        //     //child:
+                                        //   ),
+                                        // )
                                       ],
                                     ),
-                                  ),
-                                  // Container(
-                                  //   width: 180,
-                                  //   height: 60,
-                                  //   decoration: BoxDecoration(
-                                  //     color: Colors.white,
-                                  //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-                                  //   ),
-                                  //   child: Padding(
-                                  //     padding: const EdgeInsets.all(8.0),
-                                  //     //child:
-                                  //   ),
-                                  // )
-                                ],
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ) ,
-                      ),
-                    );
-                  }),
+                            ),
+                          );
+                        }),
+                  );
+                }
 
+                if (state is ProductErrorState) {
+                  return Center(
+                    child: Text(state.errorMsg),
+                  );
+                }
+                return Container();
+              }),
 
               // CurvedNavigationBar(
               //   buttonBackgroundColor: Colors.deepOrangeAccent.shade200,
@@ -286,7 +371,6 @@ class _HomePageState extends State<HomePage> {
               //       Icon(Icons.shopping_cart_outlined,color: Colors.grey.shade300),
               //       Icon(Icons.person_2_outlined,color: Colors.grey.shade300)
               // ])
-
             ],
           ),
         ),
@@ -298,15 +382,26 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(Icons.menu,color: Colors.grey,),
-            Icon(Icons.favorite_border,color: Colors.grey),
-            SizedBox(width: 20,),
-            Icon(Icons.shopping_cart_outlined,color: Colors.grey),
-            Icon(Icons.person_2_outlined,color: Colors.grey)
+            Icon(
+              Icons.menu,
+              color: Colors.grey,
+            ),
+            Icon(Icons.favorite_border, color: Colors.grey),
+            SizedBox(
+              width: 20,
+            ),
+            Icon(Icons.shopping_cart_outlined, color: Colors.grey),
+            Icon(Icons.person_2_outlined, color: Colors.grey)
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {},child: Icon(Icons.home),shape: CircleBorder(),backgroundColor: Colors.deepOrangeAccent,foregroundColor: Colors.white,),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.home),
+        shape: CircleBorder(),
+        backgroundColor: Colors.deepOrangeAccent,
+        foregroundColor: Colors.white,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

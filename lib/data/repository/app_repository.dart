@@ -8,7 +8,16 @@ class AppRepository{
   Future<dynamic> registerUser({required Map<String,dynamic> bodyParameters}) async{
 
     try{
-      return await apiHelper.postApi(url: AppUrls.REGISTER_URL,bodyPrams: bodyParameters);
+      return await apiHelper.postApi(url: AppUrls.REGISTER_URL,bodyPrams: bodyParameters,isHeaderRequired: false);
+    }catch (e){
+      throw(e);
+    }
+  }
+
+  Future<dynamic> loginUser({required Map<String,dynamic> bodyParameters}) async{
+
+    try{
+      return await apiHelper.postApi(url: AppUrls.LOGIN_URL,bodyPrams: bodyParameters,isHeaderRequired: false);
     }catch (e){
       throw(e);
     }
