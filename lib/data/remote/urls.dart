@@ -6,5 +6,7 @@ class AppUrls{
   static const String PRODUCT_URL = "${BASE_URL}/ecommerce-api/products";
   static const String ADD_CART_URL = "${BASE_URL}/ecommerce-api/add-to-card";
   static const String VIEW_CART_URL = "${BASE_URL}/ecommerce-api/product/view-cart";
-
+  static const String CATEGORY_URL = "${BASE_URL}/ecommerce-api/categories";
+  static const String CREATE_ORDER_URL = "${BASE_URL}/ecommerce-api/product/create-order";
+  static const String GET_ORDER_URL = "${BASE_URL}/ecommerce-api/product/get-order";
 }

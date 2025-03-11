@@ -1,11 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app/data/models/product_model.dart';
 import 'package:ecommerce_app/screens/home/about_product_page.dart';
+import 'package:ecommerce_app/screens/home/cart_page.dart';
+import 'package:ecommerce_app/screens/home/personal_details_page.dart';
 import 'package:ecommerce_app/screens/product_bloc/product_bloc.dart';
 import 'package:ecommerce_app/screens/product_bloc/product_event.dart';
 import 'package:ecommerce_app/screens/product_bloc/product_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +19,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ProductModel>? productModel;
+
+  List<Widget> mPage = [
+    CartPage(),
+  ];
 
   List<Color> productColors = [
     Colors.redAccent,
@@ -35,8 +42,37 @@ class _HomePageState extends State<HomePage> {
     Image.network(
         "https://th.bing.com/th/id/OIP.s3bWa5ryx7oMLUE9-JL7OwHaDt?w=273&h=175&c=7&r=0&o=5&dpr=1.3&pid=1.7")
   ];
+  
+  List<String> categoryImages = [
+    "https://th.bing.com/th/id/OIP.78nYHr1T7Yv-AxU2LWiH7QHaHa?w=185&h=185&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.0vG8_FUIhejk5KJNExa-ZgHaHa?w=182&h=182&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.sjrPMAPzf-Wh1QZb4JgojAHaHa?w=202&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.ddA6jwRNuEAGZoiIvYjjgQHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.-rD7PqeX7Vp_43bP-al0SwHaJh?w=149&h=192&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.nU6GcWu6iBGBs86qfCcI-wHaJy?w=145&h=192&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.evOPcuXk5KxWuVoxUbWIPgHaHa?w=166&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.d8Xow2XpRSLqyhJwyaE9tQHaHa?w=202&h=202&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.Sh0ME4v4Sow4BeNtZoeqygHaHa?w=218&h=218&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+    "https://th.bing.com/th/id/OIP.nErRM6XdMr4WIJMikB4NvQHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+
+  ];
+
+  List<String> categoryNames = [
+    "Shoes",
+    "Mobiles",
+    "Sunglass",
+    "Jeans",
+    "Shirts",
+    "Watch",
+    "Tv",
+    "Laptop",
+    "Earbuds",
+    "Perfumes"
+  ];
 
   int selectedIndex = -1;
+
+  int bottomSelectedIndex = 2;
 
   int bannerIndex = 0;
 
@@ -52,7 +88,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(
@@ -126,48 +162,48 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 11,
               ),
-              Container(
-                height: 120,
-                width: double.infinity,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (_, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                selectedIndex = index;
-                                setState(() {});
-                              },
-                              child: Container(
-                                height: 70,
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  border: selectedIndex == index
-                                      ? Border.all(color: Colors.blue, width: 2)
-                                      : null,
-                                  borderRadius: BorderRadius.circular(50),
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/images/groce_shoes.jpg"),fit: BoxFit.cover
-                                      ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 11,
-                            ),
-                            Text(
-                              "Shoes",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
+            Container(
+        height: 120,
+        width: double.infinity,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: categoryImages.length,
+            itemBuilder: (_, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        selectedIndex = index;
+                        setState(() {});
+                      },
+                      child: Container(
+                        height: 70,
+                        width: 70,
+                        decoration: BoxDecoration(
+                          border: selectedIndex == index
+                              ? Border.all(color: Colors.blue, width: 2)
+                              : null,
+                          borderRadius: BorderRadius.circular(50),
+                          image: DecorationImage(
+                              image: NetworkImage(categoryImages[index]),fit: BoxFit.cover
+                          ),
                         ),
-                      );
-                    }),
-              ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 11,
+                    ),
+                    Text(
+                       categoryNames[index],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              );
+            }),
+      ),
               SizedBox(
                 height: 11,
               ),
@@ -271,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(state.mProducts[index].name ?? "No Name",
+                                              Text(state.mProducts[index].name ?? "",
                                                 style: TextStyle(
                                                     fontSize: 13,
                                                     fontWeight:
@@ -390,8 +426,16 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               width: 20,
             ),
-            Icon(Icons.shopping_cart_outlined, color: Colors.grey),
-            Icon(Icons.person_2_outlined, color: Colors.grey)
+            InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()));
+              },
+                child: Icon(Icons.shopping_cart_outlined, color: Colors.grey)),
+            InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>PersonalDetailsPage()));
+                },
+                child: Icon(Icons.person_2_outlined, color: Colors.grey))
           ],
         ),
       ),

@@ -54,6 +54,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             mHeight(),
             TextField(
+              obscureText: true,
+              obscuringCharacter: "*",
               controller: passController,
               decoration: mTextFieldDecoration(
                   hintText: "Enter your pass here..",

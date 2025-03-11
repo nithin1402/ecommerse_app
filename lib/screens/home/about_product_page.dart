@@ -67,22 +67,19 @@ class _AboutProductPageState extends State<AboutProductPage> {
                 SizedBox(height: 11,),
                 Row(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        height: 30,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(Icons.star,color: Colors.white,size: 18,),
-                            Text("4.8",style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
+                    Container(
+                      height: 30,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(Icons.star,color: Colors.white,size: 18,),
+                          Text("4.8",style: TextStyle(color: Colors.white),),
+                        ],
                       ),
                     ),
                     SizedBox(width: 11,),
@@ -90,9 +87,7 @@ class _AboutProductPageState extends State<AboutProductPage> {
                     Expanded(
                       flex: 1,
                         child: SizedBox(width: 5,)),
-                    Expanded(
-                        flex:6,
-                        child: Text("Seller: Tariqul islam",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),)),
+                    Text("Seller: Tariqul islam",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
                   ],
                 ),
                 SizedBox(height: 11,),
@@ -209,6 +204,7 @@ class _AboutProductPageState extends State<AboutProductPage> {
                                 },
                                   child: Text("-",style: TextStyle(color: Colors.white,fontSize: 20),)),
                               Text("$qty",style: TextStyle(color: Colors.white,fontSize: 20),),
+
                               InkWell(
                                 onTap: () {
                                   qty++;
@@ -227,7 +223,7 @@ class _AboutProductPageState extends State<AboutProductPage> {
                               "product_id" : widget.selectedProduct.id,
                               "quantity" :qty
                             }));
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CartPage(selectedProduct: widget.selectedProduct,)));
                           },
                           child: Container(
                             height: 50,

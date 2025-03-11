@@ -1,7 +1,6 @@
 import 'package:ecommerce_app/screens/bloc/home_bloc.dart';
 import 'package:ecommerce_app/screens/bloc/home_event.dart';
 import 'package:ecommerce_app/screens/bloc/home_state.dart';
-import 'package:ecommerce_app/screens/on_boarding/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

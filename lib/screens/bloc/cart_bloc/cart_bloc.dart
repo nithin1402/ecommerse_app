@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/data/models/product_model.dart';
 import 'package:ecommerce_app/data/remote/urls.dart';
 import 'package:ecommerce_app/screens/bloc/cart_bloc/cart_event.dart';
 import 'package:ecommerce_app/screens/bloc/cart_bloc/cart_state.dart';
