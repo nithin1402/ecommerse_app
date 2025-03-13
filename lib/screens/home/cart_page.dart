@@ -2,12 +2,15 @@ import 'package:ecommerce_app/screens/bloc/cart_bloc/cart_bloc.dart';
 import 'package:ecommerce_app/screens/bloc/cart_bloc/cart_event.dart';
 import 'package:ecommerce_app/screens/bloc/cart_bloc/cart_state.dart';
 import 'package:ecommerce_app/screens/bloc/create_order_bloc/create_order_bloc.dart';
+import 'package:ecommerce_app/screens/bloc/decrement_bloc/decrement_count_bloc.dart';
+import 'package:ecommerce_app/screens/bloc/decrement_bloc/decrement_count_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/product_model.dart';
 import '../bloc/create_order_bloc/create_order_event.dart';
 import '../bloc/create_order_bloc/create_order_state.dart';
+import '../bloc/decrement_bloc/decrement_count_event.dart';
 
 class CartPage extends StatefulWidget {
   DataModel? selectedProduct;
@@ -20,6 +23,8 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   int qyt = 1;
   bool isLoading = false;
+  num price = 0;
+  num toatalPrice = 0;
 
   @override
   void initState() {
@@ -56,6 +61,8 @@ class _CartPageState extends State<CartPage> {
                       return ListView.builder(
                           itemCount: state.cartData.length,
                           itemBuilder: (_, index) {
+                            price=state.cartData[index].quantity*int.parse(state.cartData[index].price);
+                            toatalPrice=toatalPrice+price;
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
@@ -137,14 +144,23 @@ class _CartPageState extends State<CartPage> {
                                                         fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.bold)),
-                                                Row(
+                                                BlocListener<DecrementCountBloc, DecrementCountState>(
+                                                  listener: (context, state) {
+                                                  if(state is DecrementCountErrorState){
+                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMsg)));
+                                                  }
+                                                  if(state is DecrementCountLoadedState){
+                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Product removed from cart")));
+                                                  }
+                                                }, child: Row(
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
-                                                        if (qyt > 1) {
-                                                          qyt--;
-                                                          setState(() {});
-                                                        }
+                                                       context.read<DecrementCountBloc>().add(DecrementCountEvent(
+                                                           bodyParams: {
+                                                             "product_id": state.cartData[index].id,
+                                                             "quantity": state.cartData[index].quantity
+                                                       }));
                                                       },
                                                       child: Container(
                                                         height: 30,
@@ -175,7 +191,7 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       child: Center(
                                                           child: Text(
-                                                        qyt.toString(),
+                                                        state.cartData[index].quantity.toString(),
                                                         style: TextStyle(
                                                           fontSize: 18,
                                                         ),
@@ -183,8 +199,7 @@ class _CartPageState extends State<CartPage> {
                                                     ),
                                                     InkWell(
                                                       onTap: () {
-                                                        qyt++;
-                                                        setState(() {});
+                                                       state.cartData[index].quantity+1;
                                                       },
                                                       child: Container(
                                                         height: 30,
@@ -207,7 +222,8 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                     ),
                                                   ],
-                                                )
+                                                ),
+)
                                               ],
                                             )
                                           ],
@@ -303,7 +319,7 @@ class _CartPageState extends State<CartPage> {
                                   TextStyle(color: Colors.grey, fontSize: 18),
                             ),
                             Text(
-                              "\$245.00",
+                              "${price}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
@@ -328,7 +344,7 @@ class _CartPageState extends State<CartPage> {
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             Text(
-                              "\$245.00",
+                              toatalPrice.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )

@@ -4,6 +4,7 @@ import 'package:ecommerce_app/data/repository/app_repository.dart';
 import 'package:ecommerce_app/screens/add_cart_bloc/addcart_bloc.dart';
 import 'package:ecommerce_app/screens/bloc/cart_bloc/cart_bloc.dart';
 import 'package:ecommerce_app/screens/bloc/create_order_bloc/create_order_bloc.dart';
+import 'package:ecommerce_app/screens/bloc/decrement_bloc/decrement_count_bloc.dart';
 import 'package:ecommerce_app/screens/bloc/get_order_bloc/get_order_bloc.dart';
 import 'package:ecommerce_app/screens/bloc/home_bloc.dart';
 import 'package:ecommerce_app/screens/on_boarding/login_page.dart';
@@ -20,6 +21,7 @@ void main() {
     BlocProvider(create: (context)=>CartBloc(apiHelper: ApiHelper())),
     BlocProvider(create: (context)=>CreateOrderBloc(apiHelper: ApiHelper())),
     BlocProvider(create: (context)=>GetOrderBloc(apiHelper: ApiHelper())),
+    BlocProvider(create: (context)=>DecrementCountBloc(apiHelper: ApiHelper())),
     ],
     child: MyApp(),),);
 }

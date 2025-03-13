@@ -9,4 +9,5 @@ class AppUrls{
   static const String CATEGORY_URL = "${BASE_URL}/ecommerce-api/categories";
   static const String CREATE_ORDER_URL = "${BASE_URL}/ecommerce-api/product/create-order";
   static const String GET_ORDER_URL = "${BASE_URL}/ecommerce-api/product/get-order";
+  static const String DECREMENT_COUNT_URL = "${BASE_URL}/ecommerce-api/product/decrement-quantity";
 }

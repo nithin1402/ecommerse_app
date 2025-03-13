@@ -2,7 +2,6 @@ import 'package:ecommerce_app/screens/bloc/get_order_bloc/get_order_bloc.dart';
 import 'package:ecommerce_app/screens/bloc/get_order_bloc/get_order_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../data/models/orders_model.dart';
 import '../bloc/get_order_bloc/get_order_state.dart';
 
