@@ -11,7 +11,7 @@ class AppException implements Exception{
 }
 
 class FetchDataException extends AppException{
-  FetchDataException({required String errorMsg}) : super(title: "Networl Error: ", msg: errorMsg);
+  FetchDataException({required String errorMsg}) : super(title: "Network Error: ", msg: errorMsg);
 }
 
 class BadRequestException extends AppException{

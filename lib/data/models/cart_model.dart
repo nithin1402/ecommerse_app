@@ -29,7 +29,7 @@ class CartDataModel {
   final int productId;
   final String name;
   final String price;
-  final int quantity;
+  int quantity;
   final String image;
 
   CartDataModel({

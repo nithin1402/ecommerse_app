@@ -62,7 +62,8 @@ class _CartPageState extends State<CartPage> {
                           itemCount: state.cartData.length,
                           itemBuilder: (_, index) {
                             price=state.cartData[index].quantity*int.parse(state.cartData[index].price);
-                            toatalPrice=toatalPrice+price;
+                            print(price);
+                            toatalPrice+=price;
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
@@ -161,6 +162,9 @@ class _CartPageState extends State<CartPage> {
                                                              "product_id": state.cartData[index].id,
                                                              "quantity": state.cartData[index].quantity
                                                        }));
+                                                       setState(() {
+
+                                                       });
                                                       },
                                                       child: Container(
                                                         height: 30,
@@ -192,6 +196,7 @@ class _CartPageState extends State<CartPage> {
                                                       child: Center(
                                                           child: Text(
                                                         state.cartData[index].quantity.toString(),
+
                                                         style: TextStyle(
                                                           fontSize: 18,
                                                         ),
@@ -200,6 +205,9 @@ class _CartPageState extends State<CartPage> {
                                                     InkWell(
                                                       onTap: () {
                                                        state.cartData[index].quantity+1;
+                                                       setState(() {
+
+                                                       });
                                                       },
                                                       child: Container(
                                                         height: 30,
@@ -319,7 +327,7 @@ class _CartPageState extends State<CartPage> {
                                   TextStyle(color: Colors.grey, fontSize: 18),
                             ),
                             Text(
-                              "${price}",
+                              "${price.toString()}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
@@ -344,7 +352,7 @@ class _CartPageState extends State<CartPage> {
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             Text(
-                              toatalPrice.toString(),
+                              "${toatalPrice.toString()}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             )
